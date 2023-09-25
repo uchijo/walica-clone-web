@@ -29,8 +29,13 @@ export default function GroupTop() {
 
   return (
     <Layout>
-      <Box className={styles.box}>
-        <Heading as="h1" size="lg" isTruncated>
+      <Box
+        className={styles.box}
+        backgroundColor={"teal.300"}
+        padding={"3"}
+        borderRadius={"md"}
+      >
+        <Heading as="h1" size="md" color={"white"}>
           支払い履歴
         </Heading>
         {eventData?.payments?.map((payment, index) => (

@@ -15,12 +15,7 @@ export function PaymentRecord({
   className?: string;
 }): JSX.Element {
   return (
-    <Box
-      border="1px"
-      borderRadius={"md"}
-      borderColor={"blackAlpha.600"}
-      className={className}
-    >
+    <Box borderRadius={"md"} backgroundColor={"white"} className={className}>
       <Stat margin={"1"}>
         <StatLabel>{payment.name}</StatLabel>
         <StatNumber fontSize={"large"}>{payment.price}円</StatNumber>
