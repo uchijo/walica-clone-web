@@ -1,8 +1,10 @@
 import Layout from "@/components/layout";
+import { PaymentRecord } from "@/components/payment-record";
 import { apiClient } from "@/util/api";
 import { Box, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import styles from "./index.module.css";
 
 export default function GroupTop() {
   const router = useRouter();
@@ -24,20 +26,15 @@ export default function GroupTop() {
   return (
     <Layout>
       <Box>
-        <Heading as="h1" size="lg" isTruncated>支払い履歴</Heading>
+        <Heading as="h1" size="lg" isTruncated>
+          支払い履歴
+        </Heading>
         {eventData?.payments?.map((payment, index) => (
-          <div key={index}>
-            <div>
-              {payment?.name} {payment?.price}円
-            </div>
-            <div>支払い者: {payment?.payer?.name}</div>
-            <div>
-              払ってもらった人:{" "}
-              {payment?.payees?.map((payee, index) => (
-                <span key={index}>{payee?.name} </span>
-              ))}
-            </div>
-          </div>
+          <PaymentRecord
+            key={index}
+            payment={payment}
+            className={styles.paymentRecordRow}
+          />
         ))}
       </Box>
       精算： <br />
@@ -46,15 +43,6 @@ export default function GroupTop() {
           <div>
             {exchange?.payer?.name}さんが{exchange?.payee?.name}に
             {exchange?.price}円払う
-          </div>
-        </div>
-      ))}
-      <br />
-      各人の消費量 <br />
-      {eventData?.summaries?.map((sumary, index) => (
-        <div key={index}>
-          <div>
-            {sumary?.user?.name} {sumary?.totalExpense}円消費
           </div>
         </div>
       ))}
