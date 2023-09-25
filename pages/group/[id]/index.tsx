@@ -1,5 +1,6 @@
 import Layout from "@/components/layout";
 import { apiClient } from "@/util/api";
+import { Box, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
@@ -22,11 +23,8 @@ export default function GroupTop() {
 
   return (
     <Layout>
-      <div>
-        <h1>GroupTop. id: {id}</h1>
-      </div>
-      <div>
-        支払履歴： <br />
+      <Box>
+        <Heading as="h1" size="lg" isTruncated>支払い履歴</Heading>
         {eventData?.payments?.map((payment, index) => (
           <div key={index}>
             <div>
@@ -41,7 +39,7 @@ export default function GroupTop() {
             </div>
           </div>
         ))}
-      </div>
+      </Box>
       精算： <br />
       {eventData?.exchanges?.map((exchange, index) => (
         <div key={index}>

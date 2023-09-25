@@ -9,11 +9,11 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import styles from "./index.module.css";
-import MemberRow from "./components/member-row";
 import { useState } from "react";
-import MemberInput from "./components/member-input";
 import { apiClient } from "@/util/api";
 import { useRouter } from "next/router";
+import MemberInput from "@/components/member-input";
+import MemberRow from "@/components/member-row";
 
 export default function Home() {
   const [users, setUsers] = useState<string[]>([]);
