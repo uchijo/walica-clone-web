@@ -53,6 +53,14 @@ export interface ApiPaymentSummary {
   totalExpense?: number;
 }
 
+export interface ApiReadAllUsersReply {
+  users?: ApiUser[];
+}
+
+export interface ApiReadAllUsersRequest {
+  eventId?: string;
+}
+
 export interface ApiReadInfoReply {
   payments?: ApiPayment[];
   exchanges?: ApiExchange[];
@@ -372,6 +380,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     walicaCloneApiUpdatePayment: (body: ApiUpdatePaymentRequest, params: RequestParams = {}) =>
       this.request<ApiUpdatePaymentReply, RpcStatus>({
         path: `/v1/payment/update`,
+        method: "POST",
+        body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags WalicaCloneApi
+     * @name WalicaCloneApiReadAllUsers
+     * @request POST:/v1/user/all
+     */
+    walicaCloneApiReadAllUsers: (body: ApiReadAllUsersRequest, params: RequestParams = {}) =>
+      this.request<ApiReadAllUsersReply, RpcStatus>({
+        path: `/v1/user/all`,
         method: "POST",
         body: body,
         type: ContentType.Json,
