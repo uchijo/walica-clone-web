@@ -5,6 +5,10 @@ import { Box, Heading } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import styles from "./index.module.css";
+<<<<<<< HEAD
+import { ExchangeTable } from "@/components/exchange-table";
+=======
+>>>>>>> 7377a6d... 支払履歴が表示できるようになった
 
 export default function GroupTop() {
   const router = useRouter();
@@ -25,7 +29,7 @@ export default function GroupTop() {
 
   return (
     <Layout>
-      <Box>
+      <Box className={styles.box}>
         <Heading as="h1" size="lg" isTruncated>
           支払い履歴
         </Heading>
@@ -37,15 +41,9 @@ export default function GroupTop() {
           />
         ))}
       </Box>
-      精算： <br />
-      {eventData?.exchanges?.map((exchange, index) => (
-        <div key={index}>
-          <div>
-            {exchange?.payer?.name}さんが{exchange?.payee?.name}に
-            {exchange?.price}円払う
-          </div>
-        </div>
-      ))}
+      <Box className={styles.box}>
+        <ExchangeTable exchanges={eventData?.exchanges ?? []} />
+      </Box>
     </Layout>
   );
 }
