@@ -74,6 +74,14 @@ export interface ApiReadInfoRequest {
   id?: string;
 }
 
+export interface ApiReadPaymentReply {
+  payment?: ApiPayment;
+}
+
+export interface ApiReadPaymentRequest {
+  paymentId?: string;
+}
+
 export interface ApiUpdatePaymentReply {
   paymentId?: string;
 }
@@ -364,6 +372,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     walicaCloneApiAddPayment: (body: ApiAddPaymentRequest, params: RequestParams = {}) =>
       this.request<ApiAddPaymentReply, RpcStatus>({
         path: `/v1/payment/add`,
+        method: "POST",
+        body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags WalicaCloneApi
+     * @name WalicaCloneApiReadPayment
+     * @request POST:/v1/payment/read
+     */
+    walicaCloneApiReadPayment: (body: ApiReadPaymentRequest, params: RequestParams = {}) =>
+      this.request<ApiReadPaymentReply, RpcStatus>({
+        path: `/v1/payment/read`,
         method: "POST",
         body: body,
         type: ContentType.Json,

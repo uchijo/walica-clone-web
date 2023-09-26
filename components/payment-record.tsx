@@ -16,10 +16,12 @@ export function PaymentRecord({
   payment,
   className,
   eventId,
+  showButtons = true,
 }: {
   payment: ApiPayment;
   className?: string;
   eventId: string;
+  showButtons?: boolean;
 }): JSX.Element {
   const router = useRouter();
   return (
@@ -30,17 +32,19 @@ export function PaymentRecord({
           <StatNumber fontSize={"large"}>{payment.price}円</StatNumber>
           <StatHelpText>{payment.payer?.name}さんが支払い</StatHelpText>
         </Stat>
-        <Center>
-          <IconButton
-            margin={1}
-            aria-label="edit"
-            icon={<EditIcon />}
-            onClick={() => {
-              router.push(`/group/${eventId}/${payment.id}/edit`);
-            }}
-          />
-          <IconButton aria-label="delete" icon={<DeleteIcon />} />
-        </Center>
+        {showButtons && (
+          <Center>
+            <IconButton
+              margin={1}
+              aria-label="edit"
+              icon={<EditIcon />}
+              onClick={() => {
+                router.push(`/group/${eventId}/${payment.id}/edit`);
+              }}
+            />
+            <IconButton aria-label="delete" icon={<DeleteIcon />} />
+          </Center>
+        )}
       </Flex>
     </Box>
   );

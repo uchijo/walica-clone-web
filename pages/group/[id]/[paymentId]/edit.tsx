@@ -13,12 +13,19 @@ import {
   useToast,
   Box,
   Text,
+  Divider,
+  ListItem,
+  UnorderedList,
+  Card,
+  CardHeader,
+  CardBody,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import { eventFetcher, validatePaymentForm } from "../add";
 import { useState } from "react";
 import { apiClient } from "@/util/api";
 import { useRouter } from "next/router";
+import { PaymentRecord } from "@/components/payment-record";
 
 export default function EditPayment() {
   const router = useRouter();
@@ -35,6 +42,11 @@ export default function EditPayment() {
     error: eventError,
     isLoading: isEventLoading,
   } = useSWR(eventId, eventFetcher);
+  const {
+    data: payment,
+    error: paymentError,
+    isLoading: isPaymentLoading,
+  } = useSWR(paymentId, paymentFetcher);
 
   const onSubmit = async () => {
     const { ok, errorTitle, errorMessage } = validatePaymentForm({
@@ -43,7 +55,6 @@ export default function EditPayment() {
       itemName,
       price,
     });
-    console.log(payees);
     if (!ok) {
       toast({
         title: errorTitle,
@@ -75,19 +86,50 @@ export default function EditPayment() {
     }
     router.push(`/group/${eventId}`);
   };
-  if (eventError) {
-    return <div>failed to load</div>;
+
+  if (isEventLoading || isPaymentLoading) {
+    return <div>loading...</div>;
   }
 
-  if (isEventLoading) {
-    return <div>loading...</div>;
+  if (eventError || paymentError || !payment || !users) {
+    return <div>failed to load</div>;
   }
 
   return (
     <Layout>
       <FormControl>
-        <Heading as="h1" size="md">
-          支払い履歴の追加
+        <Center>
+          <Heading as="h1" size="md">
+            支払い履歴の編集
+          </Heading>
+        </Center>
+
+        <Card marginTop={4} marginBottom={4}>
+          <CardHeader>
+            <Heading as="h2" size="sm">
+              現在の支払い履歴
+            </Heading>
+          </CardHeader>
+          <CardBody>
+            <PaymentRecord
+              payment={payment}
+              eventId={eventId as string}
+              showButtons={false}
+            />
+
+            <Divider marginTop={4} marginBottom={4} colorScheme="gray" />
+
+            <Text>支払ってもらった人</Text>
+            <UnorderedList>
+              {payment.payees?.map((payee, index) => (
+                <ListItem key={index}>{payee.name}</ListItem>
+              ))}
+            </UnorderedList>
+          </CardBody>
+        </Card>
+
+        <Heading as="h2" size="sm">
+          編集
         </Heading>
         <Flex marginTop={4}>
           <Select
@@ -96,8 +138,9 @@ export default function EditPayment() {
               setPayer(e.target.value);
             }}
             required
+            value={payer}
           >
-            {users?.map((user, index) => (
+            {users.map((user, index) => (
               <option key={index} value={user.id}>
                 {user.name}
               </option>
@@ -125,6 +168,7 @@ export default function EditPayment() {
                         setPayees(payees.filter((id) => id !== user.id));
                       }
                     }}
+                    isChecked={payees.includes(user.id ?? "")}
                   />
                   <Center>
                     <Text>{user.name}</Text>
@@ -171,7 +215,7 @@ export default function EditPayment() {
             </Text>
           </Center>
         </Flex>
-        <Flex marginTop={4} justifyContent={"space-around"}>
+        <Flex margin={8} justifyContent={"space-around"}>
           <Button
             onClick={() => {
               router.push(`/group/${eventId}`);
@@ -187,3 +231,11 @@ export default function EditPayment() {
     </Layout>
   );
 }
+
+const paymentFetcher = async (paymentId: string) => {
+  const response = await apiClient.v1.walicaCloneApiReadPayment({ paymentId });
+  if (response.error) {
+    throw new Error("failed to load");
+  }
+  return response.data.payment;
+};
