@@ -21,7 +21,7 @@ import {
   CardBody,
 } from "@chakra-ui/react";
 import useSWR from "swr";
-import { eventFetcher, validatePaymentForm } from "../add";
+import { usersFetcher, validatePaymentForm } from "../add";
 import { useState } from "react";
 import { apiClient } from "@/util/api";
 import { useRouter } from "next/router";
@@ -41,7 +41,7 @@ export default function EditPayment() {
     data: users,
     error: eventError,
     isLoading: isEventLoading,
-  } = useSWR(eventId, eventFetcher);
+  } = useSWR(["users", eventId], ([_, id]: string[]) => usersFetcher(id));
   const {
     data: payment,
     error: paymentError,

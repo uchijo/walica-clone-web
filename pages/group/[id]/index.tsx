@@ -26,7 +26,7 @@ export default function GroupTop() {
     error: eventError,
     isLoading: isEventLoading,
     mutate,
-  } = useSWR(id, fetcher);
+  } = useSWR(["event", id], ([_, id]: string[]) => fetcher(id));
 
   if (eventError) {
     return <div>failed to load</div>;

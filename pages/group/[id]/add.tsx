@@ -32,7 +32,7 @@ export default function AddPayment() {
     data: users,
     error: userError,
     isLoading: isUserLoading,
-  } = useSWR(id, eventFetcher);
+  } = useSWR(["users", id], ([_, id]: string[]) => usersFetcher(id));
   const onSubmit = async () => {
     const { ok, errorTitle, errorMessage } = validatePaymentForm({
       payer,
@@ -76,9 +76,11 @@ export default function AddPayment() {
     return <div>failed to load</div>;
   }
 
-  if (isUserLoading) {
+  if (isUserLoading || !users) {
     return <div>loading...</div>;
   }
+
+  console.dir(users);
 
   return (
     <Layout>
@@ -94,7 +96,7 @@ export default function AddPayment() {
             }}
             required
           >
-            {users?.map((user, index) => (
+            {users.map((user, index) => (
               <option key={index} value={user.id}>
                 {user.name}
               </option>
@@ -185,9 +187,9 @@ export default function AddPayment() {
   );
 }
 
-export const eventFetcher = async (id: string) => {
+export const usersFetcher = async (id: string) => {
   const res = await apiClient.v1.walicaCloneApiReadAllUsers({ eventId: id });
-  if (res.error) {
+  if (res.error || !res.data?.users) {
     throw new Error(res.error.message);
   }
   return res.data.users;
