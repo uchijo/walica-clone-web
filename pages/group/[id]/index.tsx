@@ -10,7 +10,6 @@ import {
   Center,
   Heading,
   IconButton,
-  Link,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
