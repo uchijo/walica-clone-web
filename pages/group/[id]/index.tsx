@@ -1,7 +1,15 @@
 import Layout from "@/components/layout";
 import { PaymentRecord } from "@/components/payment-record";
 import { apiClient } from "@/util/api";
-import { Box, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Stack,
+  StackDivider,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import styles from "./index.module.css";
@@ -29,23 +37,23 @@ export default function GroupTop() {
 
   return (
     <Layout>
-      <Box
-        className={styles.box}
-        backgroundColor={"teal.300"}
-        padding={"3"}
-        borderRadius={"md"}
-      >
-        <Heading as="h1" size="md" color={"white"}>
-          支払い履歴
-        </Heading>
-        {eventData?.payments?.map((payment, index) => (
-          <PaymentRecord
-            key={index}
-            payment={payment}
-            className={styles.paymentRecordRow}
-          />
-        ))}
-      </Box>
+      <Card>
+        <CardHeader>
+          <Heading as="h1" size="md">
+            支払い履歴
+          </Heading>
+        </CardHeader>
+        <CardBody>
+          {eventData?.payments?.map((payment, index) => (
+            <PaymentRecord
+              key={index}
+              payment={payment}
+              className={styles.paymentRecordRow}
+            />
+          ))}
+        </CardBody>
+      </Card>
+
       <Box className={styles.box}>
         <ExchangeTable exchanges={eventData?.exchanges ?? []} />
       </Box>
