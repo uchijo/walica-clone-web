@@ -9,14 +9,14 @@ import {
   CardHeader,
   Center,
   Heading,
+  IconButton,
+  Link,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import styles from "./index.module.css";
-<<<<<<< HEAD
 import { ExchangeTable } from "@/components/exchange-table";
-=======
->>>>>>> 7377a6d... 支払履歴が表示できるようになった
+import { ArrowLeftIcon } from "@chakra-ui/icons";
 
 export default function GroupTop() {
   const router = useRouter();
@@ -38,6 +38,12 @@ export default function GroupTop() {
 
   return (
     <Layout>
+      <IconButton
+        aria-label={"go back to home"}
+        onClick={() => router.push("/")}
+      >
+        <ArrowLeftIcon />
+      </IconButton>
       <Center>
         <Heading as="h1" size="xl" isTruncated>
           {eventData?.eventName}

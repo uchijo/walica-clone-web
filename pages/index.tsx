@@ -5,7 +5,10 @@ import {
   Center,
   Heading,
   Input,
+  Link,
+  ListItem,
   Text,
+  UnorderedList,
   useToast,
 } from "@chakra-ui/react";
 import styles from "./index.module.css";
@@ -32,10 +35,23 @@ export default function Home() {
         </Heading>
 
         <Text fontSize="l" className={styles.text}>
-          割り勘を計算してくれるサービスであるWalicaを再現するプロジェクト、walica-cloneへようこそ
+          割り勘を計算してくれるサービスであるwalicaを再現するプロジェクト、walica-cloneへようこそ
+        </Text>
+
+        <Text fontSize="l" className={styles.text}>
+          ソースを見ていただければ分かるかと思いますが、本ウェブアプリの品質はお世辞にも高いとは言えず、実際に利用することはおすすめしません。
+        </Text>
+
+        <Text fontSize="l" className={styles.text}>
+          元のサービスは
+          <Link color={"teal.500"} href="https://walica.jp/">
+            こちら（https://walica.jp/）
+          </Link>
+          からアクセスできますので、割り勘を計算してくれるサービスを利用したい場合はこちらを利用することを強くおすすめします。
         </Text>
 
         <Input
+          marginTop={4}
           placeholder="イベント名"
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
@@ -110,6 +126,30 @@ export default function Home() {
               割り勘グループを作成
             </Button>
           </Center>
+        </Box>
+
+        <Box>
+          <Heading as="h2" size="md">
+            ソースを見る
+          </Heading>
+          <UnorderedList margin={4}>
+            <ListItem>
+              <Link
+                color={"teal.500"}
+                href="https://github.com/uchijo/walica-clone-web"
+              >
+                https://github.com/uchijo.com/walica-clone-web
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link
+                color={"teal.500"}
+                href="https://github.com/uchijo/walica-clone-backend"
+              >
+                https://github.com/uchijo.com/walica-clone-backend
+              </Link>
+            </ListItem>
+          </UnorderedList>
         </Box>
       </Layout>
     </>
