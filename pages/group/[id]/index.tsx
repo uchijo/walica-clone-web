@@ -10,12 +10,13 @@ import {
   Center,
   Heading,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import styles from "./index.module.css";
 import { ExchangeTable } from "@/components/exchange-table";
-import { ArrowLeftIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, CopyIcon } from "@chakra-ui/icons";
 
 export default function GroupTop() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function GroupTop() {
     isLoading: isEventLoading,
     mutate,
   } = useSWR(["event", id], ([_, id]: string[]) => fetcher(id));
+  const toast = useToast();
 
   if (eventError) {
     return <div>failed to load</div>;
@@ -59,6 +61,38 @@ export default function GroupTop() {
           }}
         >
           支払い履歴を追加する
+        </Button>
+      </Center>
+
+      <Center>
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          onClick={async () => {
+            try {
+              await navigator.clipboard.writeText(
+                `${window.location.origin}/group/${id}`
+              );
+              toast({
+                title: "リンクをコピーしました",
+                description: "友達にシェアしよう！",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+              });
+            } catch (_) {
+              toast({
+                title: "リンクのコピーに失敗しました",
+                description: "もう一度お試しください",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+              });
+            }
+          }}
+        >
+          このページのリンクをコピー
+          <CopyIcon ml={2} />
         </Button>
       </Center>
 
