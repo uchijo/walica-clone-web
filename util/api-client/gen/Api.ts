@@ -67,6 +67,7 @@ export interface ApiReadInfoReply {
   summaries?: ApiPaymentSummary[];
   /** @format int32 */
   totalExpense?: number;
+  eventName?: string;
 }
 
 export interface ApiReadInfoRequest {

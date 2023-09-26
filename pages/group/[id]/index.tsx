@@ -37,6 +37,14 @@ export default function GroupTop() {
 
   return (
     <Layout>
+      <Heading as="h1" size="xl" isTruncated>
+        {eventData?.eventName}
+      </Heading>
+
+      <Box className={styles.box}>
+        <ExchangeTable exchanges={eventData?.exchanges ?? []} />
+      </Box>
+
       <Card>
         <CardHeader>
           <Heading as="h1" size="md">
@@ -53,10 +61,6 @@ export default function GroupTop() {
           ))}
         </CardBody>
       </Card>
-
-      <Box className={styles.box}>
-        <ExchangeTable exchanges={eventData?.exchanges ?? []} />
-      </Box>
     </Layout>
   );
 }
