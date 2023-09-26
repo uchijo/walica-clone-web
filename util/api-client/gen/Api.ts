@@ -31,6 +31,14 @@ export interface ApiCreateEventRequest {
   members?: string[];
 }
 
+export interface ApiDeletePaymentReply {
+  paymentId?: string;
+}
+
+export interface ApiDeletePaymentRequest {
+  paymentId?: string;
+}
+
 export interface ApiExchange {
   /** @format int32 */
   price?: number;
@@ -372,6 +380,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     walicaCloneApiAddPayment: (body: ApiAddPaymentRequest, params: RequestParams = {}) =>
       this.request<ApiAddPaymentReply, RpcStatus>({
         path: `/v1/payment/add`,
+        method: "POST",
+        body: body,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags WalicaCloneApi
+     * @name WalicaCloneApiDeletePayment
+     * @request POST:/v1/payment/delete
+     */
+    walicaCloneApiDeletePayment: (body: ApiDeletePaymentRequest, params: RequestParams = {}) =>
+      this.request<ApiDeletePaymentReply, RpcStatus>({
+        path: `/v1/payment/delete`,
         method: "POST",
         body: body,
         type: ContentType.Json,
