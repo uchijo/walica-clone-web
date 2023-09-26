@@ -138,7 +138,7 @@ export default function Home() {
                 color={"teal.500"}
                 href="https://github.com/uchijo/walica-clone-web"
               >
-                https://github.com/uchijo.com/walica-clone-web
+                https://github.com/uchijo/walica-clone-web
               </Link>
             </ListItem>
             <ListItem>
@@ -146,7 +146,7 @@ export default function Home() {
                 color={"teal.500"}
                 href="https://github.com/uchijo/walica-clone-backend"
               >
-                https://github.com/uchijo.com/walica-clone-backend
+                https://github.com/uchijo/walica-clone-backend
               </Link>
             </ListItem>
           </UnorderedList>
