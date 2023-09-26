@@ -25,6 +25,7 @@ export default function GroupTop() {
     data: eventData,
     error: eventError,
     isLoading: isEventLoading,
+    mutate,
   } = useSWR(id, fetcher);
 
   if (eventError) {
@@ -74,6 +75,7 @@ export default function GroupTop() {
                 payment={payment}
                 eventId={id as string}
                 className={styles.paymentRecordRow}
+                mutate={mutate}
               />
             ))
             .toReversed()}
