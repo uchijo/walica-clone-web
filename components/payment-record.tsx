@@ -10,14 +10,18 @@ import {
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 export function PaymentRecord({
   payment,
   className,
+  eventId,
 }: {
   payment: ApiPayment;
   className?: string;
+  eventId: string;
 }): JSX.Element {
+  const router = useRouter();
   return (
     <Box borderRadius={"md"} className={className}>
       <Flex>
@@ -27,7 +31,14 @@ export function PaymentRecord({
           <StatHelpText>{payment.payer?.name}さんが支払い</StatHelpText>
         </Stat>
         <Center>
-          <IconButton margin={1} aria-label="edit" icon={<EditIcon />} />
+          <IconButton
+            margin={1}
+            aria-label="edit"
+            icon={<EditIcon />}
+            onClick={() => {
+              router.push(`/group/${eventId}/${payment.id}/edit`);
+            }}
+          />
           <IconButton aria-label="delete" icon={<DeleteIcon />} />
         </Center>
       </Flex>

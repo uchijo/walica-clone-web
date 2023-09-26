@@ -1,27 +1,29 @@
 import Layout from "@/components/layout";
-import { apiClient } from "@/util/api";
 import {
-  Box,
-  Button,
-  Center,
-  Flex,
   FormControl,
   Heading,
-  Input,
+  Flex,
   Select,
-  Spacer,
+  Center,
   Stack,
   Switch,
-  Text,
+  Spacer,
+  Input,
+  Button,
   useToast,
+  Box,
+  Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import useSWR from "swr";
+import { eventFetcher, validatePaymentForm } from "../add";
+import { useState } from "react";
+import { apiClient } from "@/util/api";
+import { useRouter } from "next/router";
 
-export default function AddPayment() {
+export default function EditPayment() {
   const router = useRouter();
-  const id = router.query.id;
+  const eventId = router.query.id;
+  const paymentId = router.query.paymentId;
   const [payer, setPayer] = useState<string>("");
   const [itemName, setItemName] = useState<string>("");
   const [payees, setPayees] = useState<string[]>([]);
@@ -30,9 +32,10 @@ export default function AddPayment() {
   const toast = useToast();
   const {
     data: users,
-    error: userError,
-    isLoading: isUserLoading,
-  } = useSWR(id, eventFetcher);
+    error: eventError,
+    isLoading: isEventLoading,
+  } = useSWR(eventId, eventFetcher);
+
   const onSubmit = async () => {
     const { ok, errorTitle, errorMessage } = validatePaymentForm({
       payer,
@@ -52,8 +55,8 @@ export default function AddPayment() {
       return;
     }
     setIsLoading(true);
-    const response = await apiClient.v1.walicaCloneApiAddPayment({
-      eventId: id as string,
+    const response = await apiClient.v1.walicaCloneApiUpdatePayment({
+      paymentId: paymentId as string,
       payerId: payer,
       payeeIds: payees,
       name: itemName,
@@ -70,14 +73,13 @@ export default function AddPayment() {
       });
       return;
     }
-    router.push(`/group/${id}`);
+    router.push(`/group/${eventId}`);
   };
-
-  if (userError) {
+  if (eventError) {
     return <div>failed to load</div>;
   }
 
-  if (isUserLoading) {
+  if (isEventLoading) {
     return <div>loading...</div>;
   }
 
@@ -172,10 +174,10 @@ export default function AddPayment() {
         <Flex marginTop={4} justifyContent={"space-around"}>
           <Button
             onClick={() => {
-              router.push(`/group/${id}`);
+              router.push(`/group/${eventId}`);
             }}
           >
-            記録せずに戻る
+            編集せずに戻る
           </Button>
           <Button colorScheme="teal" onClick={onSubmit} isLoading={isLoading}>
             記録する
@@ -185,67 +187,3 @@ export default function AddPayment() {
     </Layout>
   );
 }
-
-export const eventFetcher = async (id: string) => {
-  const res = await apiClient.v1.walicaCloneApiReadAllUsers({ eventId: id });
-  if (res.error) {
-    throw new Error(res.error.message);
-  }
-  return res.data.users;
-};
-
-export const validatePaymentForm = ({
-  payer,
-  payees,
-  itemName,
-  price,
-}: {
-  payer: string;
-  payees: string[];
-  itemName: string;
-  price: number;
-}): { ok: boolean; errorTitle?: string; errorMessage?: string } => {
-  if (payer === "") {
-    return {
-      ok: false,
-      errorTitle: "支払った人がいません",
-      errorMessage: "支払った人を選択してください",
-    };
-  }
-  if (payees.length === 0) {
-    return {
-      ok: false,
-      errorTitle: "支払い相手がいません",
-      errorMessage: "支払い相手を選択してください",
-    };
-  }
-  if (itemName === "") {
-    return {
-      ok: false,
-      errorTitle: "買ったものがありません",
-      errorMessage: "買ったものを入力してください",
-    };
-  }
-  if (price === 0) {
-    return {
-      ok: false,
-      errorTitle: "金額が0円です",
-      errorMessage: "金額を入力してください",
-    };
-  }
-  if (price < 0) {
-    return {
-      ok: false,
-      errorTitle: "金額がマイナスです",
-      errorMessage: "金額を正しく入力してください",
-    };
-  }
-  if (price % 1 !== 0) {
-    return {
-      ok: false,
-      errorTitle: "金額が小数です",
-      errorMessage: "金額を正しく入力してください",
-    };
-  }
-  return { ok: true };
-};

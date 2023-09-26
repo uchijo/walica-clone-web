@@ -72,6 +72,7 @@ export default function GroupTop() {
               <PaymentRecord
                 key={index}
                 payment={payment}
+                eventId={id as string}
                 className={styles.paymentRecordRow}
               />
             ))
