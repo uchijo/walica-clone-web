@@ -40,7 +40,6 @@ export default function AddPayment() {
       itemName,
       price,
     });
-    console.log(payees);
     if (!ok) {
       toast({
         title: errorTitle,
