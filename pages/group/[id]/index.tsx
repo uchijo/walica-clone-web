@@ -3,12 +3,12 @@ import { PaymentRecord } from "@/components/payment-record";
 import { apiClient } from "@/util/api";
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
+  Center,
   Heading,
-  Stack,
-  StackDivider,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -37,9 +37,24 @@ export default function GroupTop() {
 
   return (
     <Layout>
-      <Heading as="h1" size="xl" isTruncated>
-        {eventData?.eventName}
-      </Heading>
+      <Center>
+        <Heading as="h1" size="xl" isTruncated>
+          {eventData?.eventName}
+        </Heading>
+      </Center>
+
+      <Center>
+        <Button
+          colorScheme="teal"
+          size="lg"
+          className={styles.addButton}
+          onClick={() => {
+            router.push(`/group/${id}/add`);
+          }}
+        >
+          支払い履歴を追加する
+        </Button>
+      </Center>
 
       <Box className={styles.box}>
         <ExchangeTable exchanges={eventData?.exchanges ?? []} />
@@ -52,13 +67,15 @@ export default function GroupTop() {
           </Heading>
         </CardHeader>
         <CardBody>
-          {eventData?.payments?.map((payment, index) => (
-            <PaymentRecord
-              key={index}
-              payment={payment}
-              className={styles.paymentRecordRow}
-            />
-          ))}
+          {eventData?.payments
+            ?.map((payment, index) => (
+              <PaymentRecord
+                key={index}
+                payment={payment}
+                className={styles.paymentRecordRow}
+              />
+            ))
+            .toReversed()}
         </CardBody>
       </Card>
     </Layout>
