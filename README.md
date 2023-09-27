@@ -1,4 +1,4 @@
-# walica-clone-backend
+# walica-clone-web
 
 ## walica-cloneについて
 
