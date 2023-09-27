@@ -11,9 +11,10 @@
 
 ## 使用しているツール類（主要なもののみ）
 
-- gorm
-  - SQLite
+- next.js(page router)
+- SWR
 - grpc-gateway
+  - swagger-typescript-api
 
 ## 動かし方
 
